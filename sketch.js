@@ -228,7 +228,7 @@ function setup()
     itemgrid1Y = 535;
   
     // which canvas is in focus by default
-    canvas = 7;
+    canvas = 13;
 
     lock = false; 
     lock2 = false;
@@ -368,13 +368,14 @@ function draw()
       {
         canvas13();
       }
+      else if(canvas == 14)
+        {
+          canvas14();
+        }
     else
     {
         canvas = 1;
     }
-  
-   text("Mouse X "+mouseX,10,330);
-  text("Mouse Y "+mouseY,10,290);
 
 
 
@@ -831,8 +832,7 @@ function canvas6()
 
     fill(255,255,255);
   textSize(15)
-  text("Mouse X "+mouseX,50,230);
-  text("Mouse Y "+mouseY,50,400);
+
 
 if(mouseX > 396 && mouseX < 449 && mouseY > 236 && mouseY < 256 && mouseIsPressed == true)
 {
@@ -865,8 +865,7 @@ background(HeadOffice2,0,0)
   itemGrid();
  fill(255,255,255);
   textSize(15)
-  text("Mouse X "+mouseX,50,230);
-  text("Mouse Y "+mouseY,50,400);
+
 
 if(mouseX > 467 && mouseX < 530 && mouseY > 435 && mouseY < 478 && mouseIsPressed == true)
   {   
@@ -886,19 +885,50 @@ ellipse(108,305,12,12);
 
 if(mouseX > 296 && mouseX < 305 && mouseY > 300 && mouseY < 311 && mouseIsPressed == true)
 { 
-  fill(0,210,0);
-  ellipse(525,300,30,30);
-  
+
+  canvas = 14; 
+
   if(mouseX> 597 && mouseX < 688 && mouseY > 163 && mouseY < 319 && mouseIsPressed == true)
 {
   canvas = 9;
 }
 }
 
-
-
  }
   
+  function canvas14()
+  {
+    background(HeadOffice2,0,0)
+  itemGrid();
+ fill(255,255,255);
+  textSize(15)
+
+
+if(mouseX > 467 && mouseX < 530 && mouseY > 435 && mouseY < 478 && mouseIsPressed == true)
+  {   
+canvas = 8;
+    }
+
+image(ArrowLeft,50,30,100,50);
+if(mouseX > 53 && mouseX < 145 && mouseY > 40 && mouseY < 70 && mouseIsPressed == true)
+  { 
+canvas = 6; 
+  }
+fill(255,255,255);
+ellipse(439,305,12,12);
+ellipse(302,305,12,12);
+fill(0,210,0);
+ellipse(245,305,12,12);
+fill(255,255,255);
+ellipse(108,305,12,12);
+
+
+  if(mouseX> 597 && mouseX < 688 && mouseY > 163 && mouseY < 319 && mouseIsPressed == true)
+{
+  canvas = 9;
+}
+
+  }
 
 
   // PUZZLE 2 CODE MACHINE
@@ -931,8 +961,7 @@ changeellipse6();
 
 
    fill(0,0,0);
-  text("Mouse X "+mouseX,10,330);
-  text("Mouse Y "+mouseY,10,290)
+
 
   fill(0,0,0,0);
   stroke(255,255,255,0);
@@ -1003,15 +1032,15 @@ rect(560,100,40,40);
 
 if(ellipse3X == stickLocation1X && ellipse3Y == stickLocation1Y && ellipseX == stickLocation3X && ellipseY == stickLocation3Y && ellipse4X == stickLocation5X && ellipse4Y == stickLocation5Y && ellipse2X == stickLocation6X && ellipse2Y == stickLocation6Y)
 {
-  fill(0,204,0)
-  rect(660,100,70,40);
-  if(mouseX > 662 && mouseX < 733 && mouseY > 95 && mouseY < 137 && mouseIsPressed == true)
-    fill(255,255,255);
+  fill(255,255,255);
     ellipse(300,50,50,50);
-    fill(0,0,0,0)
     ellipse(400,50,50,50);
-    fill(0,204,0);
+      fill(0,204,0)
+
     ellipse(500,50,50,50);
+    fill(255,255,255);
+    ellipse(600,50,50,50);
+
 }
 
 
@@ -1627,8 +1656,6 @@ background(corridor,800,600);
 fill(255,255,255);
 timer();
 textSize(15);
-  text("Mouse X "+mouseX,10,330);
-  text("Mouse Y "+mouseY,10,290)
 
 fill(0,0,0);
 rect(100,150,600,80);
@@ -1828,7 +1855,19 @@ function canvas13()
   background(0,0,0)
 fill(255,255,255);
 textSize(50);
-text('YOU DIED!',270,300)
+text('YOU DIED!',270,300);
+
+
+fill(255,255,255)
+rect(260,400,300,80);
+fill(0,0,0);
+text('Try Again',300,450);
+textSize(15);
+if(mouseX > 263 && mouseX < 558 && mouseY > 400 && mouseY < 477 && mouseIsPressed == true )
+{
+  canvas = 2;
+}
+
 }
 
 function mouseReleased()
