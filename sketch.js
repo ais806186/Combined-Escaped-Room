@@ -16,6 +16,7 @@ var ThemeSong;
 var LoserSong;
 var OpeningTheme;
 var LastPuzzleSong;
+var slidermusic;
 
 //CANVAS 5 PUZZLE ONE ITEMS
 var circle1D;
@@ -114,6 +115,7 @@ var nextMinute = true;
 
 function preload()
 { 
+  volume = loadImage('https://dl.dropbox.com/s/sd6avisb6r7wyja/volume-booster-220x220.png')
   ThemeSong =
     loadSound('https://dl.dropbox.com/s/jqmfoua8lmye8li/ESCAPE%20ROOM%202%20Aura%20theme.mp3');
   LoserSong = 
@@ -122,6 +124,10 @@ function preload()
   LastPuzzleSong =
     loadSound('https://dl.dropbox.com/s/je9wzew4ky4k25r/last%20Puzzle%20RUNAWAY.mp3');
   
+numbpadfx = loadSound('https://dl.dropbox.com/s/iha24d4tyukedd7/padsound.wav');
+keyfx = loadSound('https://dl.dropbox.com/s/4v8xzbqswawcchv/key.wav');
+correctfx=loadSound('https://dl.dropbox.com/s/m6wz67fofcw60u7/correct.wav')
+locked = loadSound('https://dl.dropbox.com/s/vs9k3bz47a8pjlj/locked.wav')
   Paper  =       
     loadImage('https://dl.dropbox.com/s/g4mtic7qn2hug93/parchment.jpg');
   Computer1 =
@@ -200,6 +206,7 @@ right = loadImage('https://dl.dropboxusercontent.com/s/6sokst42abacjzz/leftarrow
 left = loadImage('https://dl.dropboxusercontent.com/s/8oxz8bwm49cgiws/rightarrow.png')
 
 
+
 }
 
 
@@ -207,13 +214,16 @@ left = loadImage('https://dl.dropboxusercontent.com/s/8oxz8bwm49cgiws/rightarrow
 function setup()
 {
     createCanvas(800,600);
-  
-    // canvas 1 variables
 
+  slidermusic = createSlider(0,70,100);
+  slidermusic.position(560,100);
+  slidermusic.style('width','200px'); 
+ThemeSong == slidermusic;
     // marks the location of the Paper 1
     // 1 - is original location
     // 2 - key is in transition
     // 3 - key is in user location
+
 
     PaperLocation = 1;
 
@@ -224,11 +234,8 @@ function setup()
     movePaperEndX = 40;
     movePaperEndY = 535;
 
-    itemgrid1X = 80;
-    itemgrid1Y = 535;
-  
     // which canvas is in focus by default
-    canvas = 13;
+    canvas = 2;
 
     lock = false; 
     lock2 = false;
@@ -310,10 +317,14 @@ stickLocation6Y = 175;
 function draw()
 {
   //MUSIC
+
+   ThemeSong.setVolume(slidermusic.value()/100);
   if (ThemeSong.isPlaying() == false)
-  {
-    ThemeSong.play();
+  { 
+    ThemeSong.loop();
   }
+
+
   
   //CANVAS
     if (canvas == 1)         //HEAD OFFICE
@@ -387,7 +398,13 @@ function canvas1()
   background(255,255,255);
   image(HeadOfficeDoor,0,0);
   itemGrid();
+  image(volume,500,10,50,50)
+
       paintCanvasButtons();
+    if (LoserSong.isPlaying() == true)
+  {
+    LoserSong.stop();
+  }
 
   
 
@@ -414,15 +431,15 @@ function canvas1()
       image(Paper,movePaperEndX,460,100,100);
     }
   }
-fill(0,0,0);
+  fill(0,0,0);
   rect(604,200,20,20);
-  fill(0,0,0,0);
+  fill(255,0,0);
   rect(604,250,20,20);
   fill(0,0,0);
   rect(604,300,20,20);
-  fill(0,0,0,0);
-   rect(604,350,20,20);
-   fill(0,0,0);
+  fill(255,0,0);
+  rect(604,350,20,20);
+  fill(0,0,0);
   rect(604,400,20,20);
   rect(604,450,20,20);
 
@@ -435,26 +452,34 @@ function canvas2()
   background(255,255,255);
   image(MainOffice,0,0);
   itemGrid();
+  image(volume,500,10,50,50)
+
   paintCanvasButtons();
   fill(255,255,255);
  
   text("Get to Work!",375,200);
+      if (LoserSong.isPlaying() == true)
+  {
+    LoserSong.stop();
+  }
 
 
   // if keyLocation is 1 draw the item in the original location
 
-  if (mouseX > 490 && mouseX < 510 && mouseY > 305 && mouseY < 330)       //SEVEN
+  if (mouseX > 490 && mouseX < 510 && mouseY > 305 && mouseY < 345)       //SEVEN
   {
     cursor(HAND);
-    if (mouseIsPressed == true && PaperLocation == 1)
+
+    if (mouseIsPressed == true)
     {
       image(Seven,454,270,100,100);
     }
+
   }
-    if (mouseX > 425 && mouseX < 440 && mouseY > 255 && mouseY < 270)     //FOUR
+    else if (mouseX > 425 && mouseX < 445 && mouseY > 245 && mouseY < 280)     //FOUR
     {
       cursor(HAND);
-      if (mouseIsPressed == true && PaperLocation == 1)
+      if (mouseIsPressed == true)
       {
         image(Four,365,200,100,100);
       }
@@ -476,45 +501,34 @@ function canvas3()
    background(255,255,255);
    image(OfficeBar,0,0);
    itemGrid();
+   image(volume,500,10,50,50)
+
     paintCanvasButtons();
 
    fill(255,255,255);
    text("Take This Rookie!",188,265);
-  
+       if (LoserSong.isPlaying() == true)
+  {
+    LoserSong.stop();
+  }
   
    // if PaperLocation is 1 draw the key in the original location
   if (PaperLocation == 1)
    {
      movePaperStartX = 155;
      movePaperStartY = 280;
+
      image(Paper,movePaperStartX,movePaperStartY,300/9,300/9);
    }
   // if PaperLocation is 2 then the key is in transit from original location to being in the "user's bag"
-   else if (PaperLocation == 2)
-   {
-     image(Paper,movePaperStartX,movePaperStartY,300/9,300/9);
 
-     // move the key from the starting point to the ending point
-     if (movePaperStartX > movePaperEndX)
-     {
-       movePaperStartX = movePaperStartX - 5;
-     }
-     if (movePaperStartY < movePaperEndY)
-     {
-       movePaperStartY = movePaperStartY + 7;
-     }
-     if ((movePaperStartX > movePaperEndX && movePaperStartY < movePaperEndY))
-     {
-       PaperLocation = 3;
-     }
-   }
-  else if (PaperLocation == 3)
+  else if (PaperLocation == 2)
   {
     
     image(Paper,movePaperEndX,movePaperEndY,300/9,300/9);
   }
 
-   if (mouseX > 165 && mouseX < 180 && mouseY > 285 && mouseY < 300)
+   if (mouseX > 160 && mouseX < 180 && mouseY > 285 && mouseY < 310)
    {
      cursor(HAND);
      if (mouseIsPressed == true && PaperLocation == 1)
@@ -531,7 +545,7 @@ function canvas3()
   if (mouseX > 50 && mouseX < 60 && mouseY > 545 && mouseY < 560)
   {
     cursor(HAND);
-    if(mouseIsPressed == true && PaperLocation == 3)
+    if(mouseIsPressed == true && PaperLocation == 2)
     {
       image(Paper,movePaperEndX,460,100,100);
     }
@@ -544,6 +558,14 @@ function canvas4()
 {
   background (255,255,255)
       paintCanvasButtons();
+      cursor(ARROW);
+      image(volume,500,10,50,50)
+
+          if (LoserSong.isPlaying() == true)
+  {
+    LoserSong.stop();
+  }
+
 
   if(mouseX > 250 && mouseX < 275 && mouseY > 327 && mouseY < 354 && mouseIsPressed == true)
   {
@@ -559,6 +581,7 @@ background(102,51,0);
 fill(160,160,160);
 rect(160,0,500,600);
     paintCanvasButtons();
+image(volume,500,10,50,50)
 
 fill(0,0,0);
 image(keypad,240,120,350,550);
@@ -676,6 +699,12 @@ rect(296,486,55,55);
     stateofnumber9 = 0;
     fill(0,0,0);
     rect(299,208,55,55);
+     if( numbpadfx.isPlaying() == false && mouseIsPressed == true)
+      {
+        numbpadfx.play();
+
+      
+      }
 
   }
   
@@ -693,6 +722,11 @@ rect(296,486,55,55);
     stateofnumber7 = 0;
     stateofnumber8 = 1;
     stateofnumber9 = 1;
+     if( numbpadfx.isPlaying() == false && mouseIsPressed == true)
+      {
+        numbpadfx.play();
+      }
+
   }
   
   //key3
@@ -709,6 +743,11 @@ rect(296,486,55,55);
     stateofnumber7 = 0;
     stateofnumber8 = 1;
     stateofnumber9 = 0;
+     if( numbpadfx.isPlaying() == false && mouseIsPressed == true)
+      {
+        numbpadfx.play();
+      }
+
 
   }
   
@@ -723,6 +762,11 @@ rect(296,486,55,55);
     stateofnumber5 = 1;
     stateofnumber6 = 0;
     stateofnumber8 = 0;
+ if( numbpadfx.isPlaying() == false && mouseIsPressed == true)
+      {
+        numbpadfx.play();
+      }
+
   }
   
   //key5
@@ -738,7 +782,11 @@ rect(296,486,55,55);
     stateofnumber6 = 0;
     stateofnumber7 = 1;
     stateofnumber8 = 0;
-  
+   if( numbpadfx.isPlaying() == false && mouseIsPressed == true)
+      {
+        numbpadfx.play();
+      }
+
   }
   
   //key6
@@ -755,6 +803,11 @@ rect(296,486,55,55);
     stateofnumber7 = 0;
     stateofnumber8 = 1;
     stateofnumber9 = 0;
+     if( numbpadfx.isPlaying() == false && mouseIsPressed == true)
+      {
+        numbpadfx.play();
+      }
+
   }
   
   //key7
@@ -770,6 +823,11 @@ rect(296,486,55,55);
     stateofnumber7 = 0;
     stateofnumber8 = 0;
     stateofnumber9 = 1;
+     if( numbpadfx.isPlaying() == false && mouseIsPressed == true)
+      {
+        numbpadfx.play();
+      }
+
       }
   
   //key8
@@ -786,6 +844,12 @@ rect(296,486,55,55);
     stateofnumber7 = 0;
     stateofnumber8 = 0;
     stateofnumber9 = 0;
+     if( numbpadfx.isPlaying() == false && mouseIsPressed == true)
+      {
+        numbpadfx.play();
+
+      }
+
   }
   
   //key9
@@ -801,6 +865,11 @@ rect(296,486,55,55);
     stateofnumber6 = 0;
     stateofnumber7 = 1;
     stateofnumber8 = 0;
+     if( numbpadfx.isPlaying() == false && mouseIsPressed == true)
+      {
+        numbpadfx.play();
+      }
+
   }
   
 
@@ -814,6 +883,7 @@ if(stateofnumber9 == 1 && stateofnumber7 == 1 && stateofnumber4 == 1 && stateofn
 {
   fill(0,204,0);
 ellipse(610,110,50,50)
+
   if(mouseX> 588 && mouseX< 634 && mouseY > 85 && mouseY < 134 && mouseIsPressed)
   {
     canvas = 6;
@@ -829,6 +899,7 @@ function canvas6()
 {
   background (255,255,255)
   image(HeadOffice,0,0)
+image(volume,500,10,50,50)
 
     fill(255,255,255);
   textSize(15)
@@ -865,43 +936,64 @@ background(HeadOffice2,0,0)
   itemGrid();
  fill(255,255,255);
   textSize(15)
+  image(volume,500,10,50,50)
+
+    if (LoserSong.isPlaying() == true)
+  {
+    LoserSong.stop();
+  }
 
 
 if(mouseX > 467 && mouseX < 530 && mouseY > 435 && mouseY < 478 && mouseIsPressed == true)
   {   
 canvas = 8;
+//enter code machine
     }
+
 
 image(ArrowLeft,50,30,100,50);
 if(mouseX > 53 && mouseX < 145 && mouseY > 40 && mouseY < 70 && mouseIsPressed == true)
   { 
 canvas = 6; 
+//back to first image of head office
   }
 
 ellipse(439,305,12,12);
 ellipse(302,305,12,12);
 ellipse(245,305,12,12);
 ellipse(108,305,12,12);
+//buttons on the shelf
+
 
 if(mouseX > 296 && mouseX < 305 && mouseY > 300 && mouseY < 311 && mouseIsPressed == true)
 { 
 
   canvas = 14; 
-
+  //canvas with the button green
+}
   if(mouseX> 597 && mouseX < 688 && mouseY > 163 && mouseY < 319 && mouseIsPressed == true)
 {
-  canvas = 9;
-}
+  if(locked.isPlaying() == false)
+  {
+    locked.play();
+  }
 }
 
+
  }
-  
+  //Other side of the head office
   function canvas14()
   {
     background(HeadOffice2,0,0)
   itemGrid();
  fill(255,255,255);
   textSize(15)
+  image(volume,500,10,50,50)
+
+    if (LoserSong.isPlaying() == true)
+  {
+    LoserSong.stop();
+  }
 
 
 if(mouseX > 467 && mouseX < 530 && mouseY > 435 && mouseY < 478 && mouseIsPressed == true)
@@ -938,6 +1030,12 @@ function canvas8()
   image(typewriter,-40,90,870,400);
   fill(0,0,0);
   itemGrid();
+  image(volume,500,10,50,50)
+
+    if (LoserSong.isPlaying() == true)
+  {
+    LoserSong.stop();
+  }
 
   image(ArrowLeft,50,30,100,50);
 if(mouseX > 53 && mouseX < 145 && mouseY > 38 && mouseY < 70 && mouseIsPressed == true)
@@ -985,7 +1083,6 @@ rect(290,100,40,40);
 rect(380,100,40,40);
 rect(470,100,40,40);
 rect(560,100,40,40);
-rect(660,100,70,40);
 
 //first box
 if(ellipse3X == stickLocation1X && ellipse3Y == stickLocation1Y)
@@ -993,6 +1090,7 @@ if(ellipse3X == stickLocation1X && ellipse3Y == stickLocation1Y)
 {
 fill(0,204,0);
 rect(110,100,40,40);
+ 
 }
 //second answer box
 if(ellipse6X == stickLocation2X && ellipse6Y == stickLocation2Y)
@@ -1041,8 +1139,9 @@ if(ellipse3X == stickLocation1X && ellipse3Y == stickLocation1Y && ellipseX == s
     fill(255,255,255);
     ellipse(600,50,50,50);
 
-}
 
+
+}
 
 }
 
@@ -1055,9 +1154,13 @@ fill(100,100,100);
 if(ellipseDistance< 20)
 
     {
-      if (mouseIsPressed == true && mouseButton == LEFT && lock == false && lock2 == false  &&lock3 == false && lock4 == false && lock5 == false && lock6 == false &&lock7 == false && lock8 == false)
+      if (mouseIsPressed == true && mouseButton == LEFT && lock == false && lock2 == false && lock3 == false && lock4 == false && lock5 == false && lock6 == false &&lock7 == false && lock8 == false && lock9 == false && lock10 == false&& lock11 == false && lock12 == false)
       {
         lock = true;
+        if( keyfx.isPlaying() == false && mouseIsPressed == true)
+      {
+        keyfx.play();
+      }
       }
     }
 
@@ -1081,6 +1184,8 @@ stickDistance6 = sqrt((stickLocation6X-mouseX)*(stickLocation6X-mouseX)+(stickLo
         ellipseX = stickLocation1X;
         ellipseY = stickLocation1Y;
         permanentLock1 = true;
+
+
       }
       else if(stickDistance2 < 10)
       {
@@ -1139,9 +1244,13 @@ fill(100,100,100);
 if(ellipseDistance2< 20)
 
     {
-      if (mouseIsPressed == true && mouseButton == LEFT && lock == false && lock2 == false  && lock3 == false && lock4 == false && lock5 == false && lock6 == false &&lock7 == false && lock8 == false)
+      if (mouseIsPressed == true && mouseButton == LEFT && lock == false && lock2 == false && lock3 == false && lock4 == false && lock5 == false && lock6 == false &&lock7 == false && lock8 == false && lock9 == false && lock10 == false&& lock11 == false && lock12 == false)
       {
         lock4 = true;
+                 if( keyfx.isPlaying() == false && mouseIsPressed == true)
+      {
+        keyfx.play();
+      }
       }
     }
 
@@ -1223,9 +1332,13 @@ fill(100,100,100);
 if(ellipseDistance3< 20)
 
     {
-      if (mouseIsPressed == true && mouseButton == LEFT &&lock == false && lock2 == false  &&lock3 == false && lock4 == false && lock5 == false && lock6 == false &&lock7 == false && lock8 == false)
+      if (mouseIsPressed == true && mouseButton == LEFT &&lock == false && lock2 == false && lock3 == false && lock4 == false && lock5 == false && lock6 == false &&lock7 == false && lock8 == false && lock9 == false && lock10 == false&& lock11 == false && lock12 == false)
       {
         lock6 = true;
+                 if( keyfx.isPlaying() == false && mouseIsPressed == true)
+      {
+        keyfx.play();
+      }
       }
     }
 
@@ -1307,9 +1420,13 @@ fill(100,100,100);
 if(ellipseDistance4< 20)
 
     {
-      if (mouseIsPressed == true && mouseButton == LEFT && lock == false && lock2 == false && lock3 == false && lock4 == false && lock5 == false && lock6 == false &&lock7 == false && lock8 == false)
+      if (mouseIsPressed == true && mouseButton == LEFT && lock == false && lock2 == false && lock3 == false && lock4 == false && lock5 == false && lock6 == false &&lock7 == false && lock8 == false && lock9 == false && lock10 == false&& lock11 == false && lock12 == false)
       {
         lock7 = true;
+                 if( keyfx.isPlaying() == false && mouseIsPressed == true)
+      {
+        keyfx.play();
+      }
       }
     }
 
@@ -1392,9 +1509,13 @@ fill(100,100,100);
 if(ellipseDistance5< 20)
 
     {
-      if (mouseIsPressed == true && mouseButton == LEFT && lock == false && lock2 == false && lock3 == false && lock4 == false && lock5 == false && lock6 == false &&lock7 == false && lock8 == false && lock9 == false && lock10 == false)
+      if (mouseIsPressed == true && mouseButton == LEFT && lock == false && lock2 == false && lock3 == false && lock4 == false && lock5 == false && lock6 == false &&lock7 == false && lock8 == false && lock9 == false && lock10 == false&& lock11 == false && lock12 == false)
       {
         lock9 = true;
+                 if( keyfx.isPlaying() == false && mouseIsPressed == true)
+      {
+        keyfx.play();
+      }
       }
     }
 
@@ -1481,6 +1602,10 @@ if(ellipseDistance6< 20)
       if (mouseIsPressed == true && mouseButton == LEFT && lock == false && lock2 == false && lock3 == false && lock4 == false && lock5 == false && lock6 == false &&lock7 == false && lock8 == false && lock9 == false && lock10 == false&& lock11 == false && lock12 == false)
       {
         lock11 = true;
+                 if( keyfx.isPlaying() == false && mouseIsPressed == true)
+      {
+        keyfx.play();
+      }
       }
     }
 
@@ -1656,6 +1781,19 @@ background(corridor,800,600);
 fill(255,255,255);
 timer();
 textSize(15);
+image(volume,500,10,50,50)
+
+
+    if (ThemeSong.isPlaying() == true)
+  {
+    ThemeSong.stop();
+  }
+     LastPuzzleSong.setVolume(slidermusic.value()/100);
+  if (LastPuzzleSong.isPlaying() == false)
+  { 
+    LastPuzzleSong.loop();
+  }
+
 
 fill(0,0,0);
 rect(100,150,600,80);
@@ -1726,7 +1864,19 @@ function canvas10()
 {
   background(corridor2,800,600);
  timer();
+ image(volume,500,10,50,50)
 
+ 
+
+    if (ThemeSong.isPlaying() == true)
+  {
+    ThemeSong.stop();
+  }
+   LastPuzzleSong.setVolume(slidermusic.value()/100);
+  if (LastPuzzleSong.isPlaying() == false)
+  { 
+    LastPuzzleSong.loop();
+  }
    fill(0,0,0);
 rect(100,150,600,80);
 fill(255,255,255);
@@ -1785,7 +1935,17 @@ function canvas11()
   background(corridor3,800,600);
   fill(255,255,255);
  timer();
+ image(volume,500,10,50,50)
 
+    if (ThemeSong.isPlaying() == true)
+  {
+    ThemeSong.stop();
+  }
+   LastPuzzleSong.setVolume(slidermusic.value()/100);
+  if (LastPuzzleSong.isPlaying() == false)
+  { 
+    LastPuzzleSong.loop();
+  }
 
      fill(0,0,0);
 rect(100,150,600,80);
@@ -1858,17 +2018,24 @@ textSize(50);
 text('YOU DIED!',270,300);
 
 
-fill(255,255,255)
-rect(260,400,300,80);
-fill(0,0,0);
-text('Try Again',300,450);
-textSize(15);
-if(mouseX > 263 && mouseX < 558 && mouseY > 400 && mouseY < 477 && mouseIsPressed == true )
-{
-  canvas = 2;
-}
+     if (ThemeSong.isPlaying() == true)
+  {
+    ThemeSong.stop();
+  }
+ 
+ if (LastPuzzleSong.isPlaying() == true)
+  {
+    LastPuzzleSong.stop();
+  }
+      if (LoserSong.isPlaying() == false)
+  {
+    LoserSong.play();
+  }
+
+
 
 }
+
 
 function mouseReleased()
 {
@@ -2081,8 +2248,9 @@ function paintCanvasButtons()
    if (mouseX > myX+290 && mouseX < myX+290+100 && mouseY > myY+300 && mouseY < myY+300+50 && mouseIsPressed)
    {
      canvas = 3;
-     keyLocation = 1;
    }
+
+   strokeWeight(1);
     
 }
 
