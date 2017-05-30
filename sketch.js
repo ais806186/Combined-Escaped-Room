@@ -2001,13 +2001,19 @@ canvas = 12;
 
 function canvas12()
 {
+
+  
 background(street,800,600);
 fill(255,255,255);
 stroke(0,0,0)
 textSize(50);
 text('Congratulations,',200,300);
 text('YOU WON!!!',210,370);
-
+ LastPuzzleSong.setVolume(slidermusic.value()/100);
+  if (LastPuzzleSong.isPlaying() == false)
+  { 
+    LastPuzzleSong.loop();
+  }
 }
 
 function canvas13()
